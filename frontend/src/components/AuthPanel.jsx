@@ -1,4 +1,13 @@
-import { ShieldCheck, UserRound } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  CheckCircle2,
+  Eye,
+  EyeOff,
+  ShieldCheck,
+  Sparkles,
+  UserRound,
+} from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import rocketImage from "../assets/rocket.png";
@@ -7,40 +16,77 @@ const roles = [
   {
     id: "learner",
     label: "Learner",
-    description: "Access courses, quizzes, games, and progress tracking.",
+    description: "Access lessons, quizzes, simulators, and personal progress tracking.",
     icon: UserRound,
   },
   {
     id: "admin",
     label: "Admin",
-    description: "Manage content, track users, and monitor platform activity.",
+    description: "Manage content, review activity, and support learners across the platform.",
     icon: ShieldCheck,
   },
 ];
 
+const trustPoints = [
+  "Track your growth across lessons, challenges, and practice sessions.",
+  "Save your goals and return to them from any device.",
+  "Practice financial decisions before making them in real life.",
+];
+
 export default function AuthPanel({ mode }) {
   const [selectedRole, setSelectedRole] = useState("learner");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const isLogin = mode === "login";
+  const heading = isLogin ? "Welcome back to FinArena." : "Create your FinArena account.";
+  const copy = isLogin
+    ? "Choose your access type and continue your finance learning journey."
+    : "Set up your profile and start learning, practicing, and tracking your progress.";
+  const roleLabel = selectedRole === "admin" ? "Admin Access" : "Learner Access";
+  const roleCopy =
+    selectedRole === "admin"
+      ? "Use this workspace to manage content, review learner activity, and guide the platform experience."
+      : "Use this workspace to build confidence with lessons, games, quizzes, and simulators.";
 
   return (
-    <main className="page-shell">
-      <section className="content-board overflow-hidden">
+    <main className="page-shell auth-shell">
+      <section className="content-board auth-board overflow-hidden">
         <div className="auth-orb auth-orb-left" />
         <div className="auth-orb auth-orb-right" />
 
-        <div className="relative z-10 grid gap-10 px-4 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="rounded-[34px] border border-white/45 bg-[linear-gradient(160deg,_rgba(255,255,255,0.82),_rgba(243,233,255,0.75))] p-8 shadow-[0_24px_70px_rgba(168,85,247,0.1)]">
-            <span className="eyebrow">{isLogin ? "Login" : "Sign Up"}</span>
+        <div className="relative z-10 grid gap-8 lg:grid-cols-[1.02fr_0.98fr]">
+          <div className="auth-form-card">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <span className="eyebrow">{isLogin ? "Login" : "Sign Up"}</span>
+              <div className="inline-flex rounded-full border border-white/50 bg-white/70 p-1 text-sm font-medium text-[#8b46d8]">
+                <Link
+                  to="/login"
+                  className={[
+                    "rounded-full px-4 py-2 transition",
+                    isLogin ? "bg-[#8b5cf6] text-white shadow-[0_10px_25px_rgba(139,92,246,0.25)]" : "",
+                  ].join(" ")}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className={[
+                    "rounded-full px-4 py-2 transition",
+                    !isLogin
+                      ? "bg-[#8b5cf6] text-white shadow-[0_10px_25px_rgba(139,92,246,0.25)]"
+                      : "",
+                  ].join(" ")}
+                >
+                  Sign Up
+                </Link>
+              </div>
+            </div>
+
             <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-[-0.04em] text-[#5f2e99]">
-              {isLogin
-                ? "Welcome back to FinArena."
-                : "Create your FinArena account."}
+              {heading}
             </h1>
-            <p className="mt-4 text-base leading-8 text-[#7d63a1]">
-              {isLogin
-                ? "Choose your role and continue your finance learning journey."
-                : "Choose whether you are joining as a learner or an admin."}
-            </p>
+            <p className="mt-4 text-base leading-8 text-[#7d63a1]">{copy}</p>
 
             <div className="mt-8 grid gap-4 md:grid-cols-2">
               {roles.map(({ id, label, description, icon: Icon }) => {
@@ -52,21 +98,24 @@ export default function AuthPanel({ mode }) {
                     type="button"
                     onClick={() => setSelectedRole(id)}
                     className={[
-                      "rounded-[26px] border p-5 text-left transition",
+                      "rounded-[26px] border p-5 text-left transition duration-200",
                       active
-                        ? "border-[#c084fc] bg-[linear-gradient(145deg,_rgba(255,255,255,0.92),_rgba(241,228,255,0.95))] shadow-[0_18px_40px_rgba(168,85,247,0.16)]"
-                        : "border-white/40 bg-white/65 hover:border-[#d8b4fe]",
+                        ? "border-[#c084fc] bg-[linear-gradient(145deg,_rgba(255,255,255,0.94),_rgba(241,228,255,0.96))] shadow-[0_18px_40px_rgba(168,85,247,0.16)]"
+                        : "border-white/40 bg-white/65 hover:border-[#d8b4fe] hover:bg-white/80",
                     ].join(" ")}
                   >
-                    <span className="icon-chip">
-                      <Icon size={20} />
-                    </span>
-                    <h2 className="mt-4 text-xl font-semibold text-[#5f2e99]">
-                      {label}
-                    </h2>
-                    <p className="mt-2 text-sm leading-7 text-[#7d63a1]">
-                      {description}
-                    </p>
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="icon-chip">
+                        <Icon size={20} />
+                      </span>
+                      {active ? (
+                        <span className="rounded-full bg-[#f2e7ff] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#8b46d8]">
+                          Selected
+                        </span>
+                      ) : null}
+                    </div>
+                    <h2 className="mt-4 text-xl font-semibold text-[#5f2e99]">{label}</h2>
+                    <p className="mt-2 text-sm leading-7 text-[#7d63a1]">{description}</p>
                   </button>
                 );
               })}
@@ -74,53 +123,155 @@ export default function AuthPanel({ mode }) {
 
             <form className="mt-8 grid gap-4" onSubmit={(event) => event.preventDefault()}>
               {!isLogin ? (
-                <input className="form-input" type="text" placeholder="Full name" />
+                <label className="grid gap-2">
+                  <span className="auth-label">Full name</span>
+                  <input className="form-input" type="text" placeholder="Aarav Sharma" />
+                </label>
               ) : null}
-              <input className="form-input" type="email" placeholder="Email address" />
-              <input className="form-input" type="password" placeholder="Password" />
+
+              <label className="grid gap-2">
+                <span className="auth-label">Email address</span>
+                <input className="form-input" type="email" placeholder="you@example.com" />
+              </label>
+
+              <label className="grid gap-2">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="auth-label">Password</span>
+                  {isLogin ? (
+                    <button type="button" className="auth-link text-xs">
+                      Forgot password?
+                    </button>
+                  ) : null}
+                </div>
+                <div className="auth-password-wrap">
+                  <input
+                    className="form-input auth-password-input"
+                    type={showPassword ? "text" : "password"}
+                    placeholder={isLogin ? "Enter your password" : "Create a secure password"}
+                  />
+                  <button
+                    type="button"
+                    className="auth-password-toggle"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    onClick={() => setShowPassword((current) => !current)}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </label>
+
               {!isLogin ? (
-                <input
-                  className="form-input"
-                  type="password"
-                  placeholder="Confirm password"
-                />
+                <label className="grid gap-2">
+                  <span className="auth-label">Confirm password</span>
+                  <div className="auth-password-wrap">
+                    <input
+                      className="form-input auth-password-input"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Re-enter your password"
+                    />
+                    <button
+                      type="button"
+                      className="auth-password-toggle"
+                      aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                      onClick={() => setShowConfirmPassword((current) => !current)}
+                    >
+                      {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </label>
               ) : null}
+
+              <label className="auth-check">
+                <input type="checkbox" defaultChecked />
+                <span>
+                  {isLogin
+                    ? "Keep me signed in on this device"
+                    : "I agree to the Terms of Service and Privacy Policy"}
+                </span>
+              </label>
+
               <button type="submit" className="primary-pill justify-center">
-                {isLogin ? `Login as ${selectedRole}` : `Create ${selectedRole} account`}
+                <span>{isLogin ? "Login to dashboard" : "Create account"}</span>
+                <ArrowRight size={18} />
               </button>
             </form>
 
+            <div className="auth-divider">
+              <span>or continue with</span>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <button type="button" className="auth-provider">
+                <span className="auth-provider-mark">G</span>
+                Google
+              </button>
+              <button type="button" className="auth-provider">
+                <span className="auth-provider-mark">A</span>
+                Apple
+              </button>
+            </div>
+
             <p className="mt-6 text-sm text-[#7d63a1]">
               {isLogin ? "New to FinArena?" : "Already have an account?"}{" "}
-              <Link
-                to={isLogin ? "/signup" : "/login"}
-                className="font-semibold text-[#7b3aed]"
-              >
+              <Link to={isLogin ? "/signup" : "/login"} className="font-semibold text-[#7b3aed]">
                 {isLogin ? "Sign up here" : "Login here"}
               </Link>
             </p>
           </div>
 
           <div className="flex items-center justify-center">
-            <div className="relative w-full max-w-[560px] rounded-[36px] border border-white/45 bg-[linear-gradient(160deg,_rgba(255,255,255,0.58),_rgba(235,214,255,0.7))] p-6 shadow-[0_28px_80px_rgba(168,85,247,0.14)]">
+            <div className="auth-showcase">
               <div className="absolute inset-x-10 top-10 h-52 rounded-full bg-[radial-gradient(circle,_rgba(216,180,254,0.5),_transparent_70%)] blur-2xl" />
+
+              <div className="relative z-10 flex items-center justify-between gap-4 rounded-[28px] border border-white/45 bg-white/75 px-5 py-4 shadow-[0_18px_40px_rgba(168,85,247,0.08)]">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.22em] text-[#ab8bcc]">
+                    FinArena access
+                  </p>
+                  <h2 className="mt-2 text-2xl font-semibold text-[#5f2e99]">{roleLabel}</h2>
+                </div>
+                <span className="icon-chip">
+                  {selectedRole === "admin" ? <ShieldCheck size={20} /> : <Sparkles size={20} />}
+                </span>
+              </div>
+
               <img
                 src={rocketImage}
                 alt="FinArena welcome illustration"
                 className="relative z-10 h-auto w-full rounded-[26px] object-cover"
               />
-              <div className="relative z-10 mt-6 rounded-[28px] bg-white/78 p-6">
-                <p className="text-sm uppercase tracking-[0.18em] text-[#ab8bcc]">
-                  Selected role
-                </p>
-                <h3 className="mt-2 text-3xl font-semibold text-[#5f2e99]">
-                  {selectedRole === "admin" ? "Admin Access" : "Learner Access"}
-                </h3>
-                <p className="mt-3 text-base leading-8 text-[#7d63a1]">
-                  {selectedRole === "admin"
-                    ? "Use this flow to manage courses, content, and learner progress."
-                    : "Use this flow to learn, play challenges, and track your growth."}
-                </p>
+
+              <div className="relative z-10 grid gap-4">
+                <div className="rounded-[28px] bg-white/80 p-6">
+                  <p className="text-sm uppercase tracking-[0.18em] text-[#ab8bcc]">
+                    Selected role
+                  </p>
+                  <h3 className="mt-2 text-3xl font-semibold text-[#5f2e99]">{roleLabel}</h3>
+                  <p className="mt-3 text-base leading-8 text-[#7d63a1]">{roleCopy}</p>
+                </div>
+
+                <div className="grid gap-3 rounded-[28px] border border-white/45 bg-[linear-gradient(180deg,_rgba(255,255,255,0.78),_rgba(247,238,255,0.78))] p-6">
+                  <div className="flex items-center gap-3">
+                    <span className="icon-chip">
+                      <BarChart3 size={20} />
+                    </span>
+                    <div>
+                      <p className="text-sm uppercase tracking-[0.18em] text-[#ab8bcc]">
+                        Why join
+                      </p>
+                      <h4 className="text-xl font-semibold text-[#5f2e99]">
+                        Your finance practice hub
+                      </h4>
+                    </div>
+                  </div>
+
+                  {trustPoints.map((point) => (
+                    <div key={point} className="auth-trust-row">
+                      <CheckCircle2 size={18} />
+                      <span>{point}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

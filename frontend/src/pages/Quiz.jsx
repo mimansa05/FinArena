@@ -6,14 +6,14 @@ import { useParams } from "react-router-dom";
 const quizData = {
   money: [
     {
-      question: "What is saving?",
-      options: ["Spending", "Keeping money", "Borrowing"],
-      answer: "Keeping money",
+      question: "What is the core of money management?",
+      options: ["Spending only", "Earning only", "Earning, spending, saving","Borrowing"],
+      answer: "Earning, spending, saving",
     },
     {
-      question: "Why is budgeting important?",
-      options: ["To waste money", "To track spending", "To avoid saving"],
-      answer: "To track spending",
+      question: "What is saving?",
+      options: ["Spending money", "Setting aside money for future use", " Borrowing money","Losing money"],
+      answer: "Setting aside money for future use",
     },
     {
       question: "Emergency funds are used for?",
@@ -59,8 +59,9 @@ const quizData = {
   ],
 };
 
-export default function Quiz() {
-  const { id } = useParams();
+export default function Quiz(props) {
+  const params = useParams();
+const id = props.id || params.id;
   const navigate = useNavigate();
 
   const shuffleArray = (array) => {

@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
+import Course from "./pages/Course";
 import Landing from "./pages/Landing";
 import Learn from "./pages/Learn";
 import Login from "./pages/Login";
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/learn" element={<Learn />} />
+        <Route path="/course/:id" element={<Course />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/quiz/:id" element={<Quiz />} />
         <Route path="/simulator" element={<Simulator />} />

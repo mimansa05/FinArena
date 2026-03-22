@@ -7,6 +7,7 @@ const modules = [
     title: "Money Basics",
     description: "Learn budgeting, saving, and healthy spending habits.",
     length: "12 min",
+    
   },
   {
     id: "investing",
@@ -63,8 +64,7 @@ export default function Learn() {
                   <Clock3 size={16} />
                   {module.length}
                 </span>
-                <button onClick={() => navigate(`/quiz/${module.id}`)}
-  className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,_#9b5cf6,_#c084fc)] px-4 py-2.5 font-semibold text-white"
+                <button onClick={() => navigate(`/course/${module.id}`)} className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,_#9b5cf6,_#c084fc)] px-4 py-2.5 font-semibold text-white"
 >
   <PlayCircle size={16} />
   Start

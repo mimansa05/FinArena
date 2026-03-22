@@ -1,24 +1,41 @@
 import { BookOpen, Clock3, PlayCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const modules = [
   {
+    id: "money",
     title: "Money Basics",
     description: "Learn budgeting, saving, and healthy spending habits.",
     length: "12 min",
   },
   {
+    id: "investing",
     title: "Investing 101",
     description: "Understand risk, returns, and beginner-friendly strategies.",
     length: "18 min",
   },
   {
+    id: "credit",
     title: "Credit & Loans",
     description: "Explore scores, interest, and smart borrowing decisions.",
+    length: "15 min",
+  },
+  {
+    id: "risk",
+    title: "Risk and diversification",
+    description: "Don't put all money in one place. Learn how to spread it out.",
+    length: "15 min",
+  },
+  {
+    id: "budget",
+    title: "Budgeting & Saving",
+    description: "Budgeting is planning how you use your money..",
     length: "15 min",
   },
 ];
 
 export default function Learn() {
+  const navigate = useNavigate();
   return (
     <main className="page-shell">
       <section className="content-board">
@@ -46,10 +63,12 @@ export default function Learn() {
                   <Clock3 size={16} />
                   {module.length}
                 </span>
-                <button className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,_#9b5cf6,_#c084fc)] px-4 py-2.5 font-semibold text-white">
-                  <PlayCircle size={16} />
-                  Start
-                </button>
+                <button onClick={() => navigate(`/quiz/${module.id}`)}
+  className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,_#9b5cf6,_#c084fc)] px-4 py-2.5 font-semibold text-white"
+>
+  <PlayCircle size={16} />
+  Start
+</button>
               </div>
             </article>
           ))}

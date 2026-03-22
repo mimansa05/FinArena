@@ -4,7 +4,6 @@ const navItems = [
   { label: "Home", to: "/" },
   { label: "Courses", to: "/learn" },
   { label: "Games", to: "/practice" },
-  { label: "Quizzes", to: "/quiz" },
   { label: "FAQ", to: "/about" },
 ];
 

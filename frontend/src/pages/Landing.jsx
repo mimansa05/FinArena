@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import gameImage from "../assets/game.png";
-import rocketImage from "../assets/rocket.png";
+import heroImage from "../assets/hero.png";
 
 const highlights = [
   {
@@ -98,26 +98,18 @@ export default function Landing() {
             <div className="hero-ring hero-ring-sm" />
             <div className="hero-scene-glow" />
 
-            <div className="hero-course-panel">
-              <div className="hero-panel-icon">
-                <BookOpen size={24} />
-              </div>
-              <h3 className="hero-course-title mt-8 text-[2.45rem] font-semibold leading-[0.96] tracking-[-0.05em] text-[#57238f] md:text-[3rem]">
-                Learn Courses
-              </h3>
-              <p className="mt-5 max-w-[17rem] text-[1.05rem] font-medium leading-8 text-[#7f679f]">
-                Dive into engaging lessons designed to train your finance
-                mindset in a playful way.
-              </p>
-              <Link to="/learn" className="primary-pill mt-8 w-fit">
-                Start Learning
-              </Link>
+            <div className="hero-course-panel hero-course-image-panel">
+              <img
+                src={heroImage}
+                alt="FinArena learning illustration"
+                className="hero-course-image"
+              />
             </div>
 
             <div className="hero-image-card hero-image-card-rocket hero-mask-soft">
               <img
-                src={rocketImage}
-                alt="FinArena rocket illustration"
+                src={heroImage}
+                alt="FinArena hero illustration"
                 className="h-full w-full object-cover"
               />
             </div>

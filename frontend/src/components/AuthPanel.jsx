@@ -8,8 +8,8 @@ import {
   Sparkles,
   UserRound,
 } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import rocketImage from "../assets/rocket.png";
 
 const roles = [
@@ -34,13 +34,34 @@ const trustPoints = [
 ];
 
 export default function AuthPanel({ mode }) {
+  const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState("learner");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState("");
 
   const isLogin = mode === "login";
-  const heading = isLogin ? "Welcome back to FinArena." : "Create your FinArena account.";
-  const copy = isLogin
+  const isAdminSignup = selectedRole === "admin" && !isLogin;
+
+  useEffect(() => {
+    if (selectedRole === "admin") {
+      setEmail("mimansasharma308@gmail.com");
+      return;
+    }
+
+    if (email === "mimansasharma308@gmail.com") {
+      setEmail("");
+    }
+  }, [selectedRole]);
+
+  const heading = isAdminSignup
+    ? "Admin access is login only."
+    : isLogin
+      ? "Welcome back to FinArena."
+      : "Create your FinArena account.";
+  const copy = isAdminSignup
+    ? "Admin accounts are managed separately. Use the approved email below to log in to the admin workspace."
+    : isLogin
     ? "Choose your access type and continue your finance learning journey."
     : "Set up your profile and start learning, practicing, and tracking your progress.";
   const roleLabel = selectedRole === "admin" ? "Admin Access" : "Learner Access";
@@ -48,6 +69,11 @@ export default function AuthPanel({ mode }) {
     selectedRole === "admin"
       ? "Use this workspace to manage content, review learner activity, and guide the platform experience."
       : "Use this workspace to build confidence with lessons, games, quizzes, and simulators.";
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    navigate("/dashboard");
+  };
 
   return (
     <main className="page-shell auth-shell">
@@ -69,17 +95,19 @@ export default function AuthPanel({ mode }) {
                 >
                   Login
                 </Link>
-                <Link
-                  to="/signup"
-                  className={[
-                    "rounded-full px-4 py-2 transition",
-                    !isLogin
-                      ? "bg-[#8b5cf6] text-white shadow-[0_10px_25px_rgba(139,92,246,0.25)]"
-                      : "",
-                  ].join(" ")}
-                >
-                  Sign Up
-                </Link>
+                {selectedRole !== "admin" ? (
+                  <Link
+                    to="/signup"
+                    className={[
+                      "rounded-full px-4 py-2 transition",
+                      !isLogin
+                        ? "bg-[#8b5cf6] text-white shadow-[0_10px_25px_rgba(139,92,246,0.25)]"
+                        : "",
+                    ].join(" ")}
+                  >
+                    Sign Up
+                  </Link>
+                ) : null}
               </div>
             </div>
 
@@ -121,8 +149,8 @@ export default function AuthPanel({ mode }) {
               })}
             </div>
 
-            <form className="mt-8 grid gap-4" onSubmit={(event) => event.preventDefault()}>
-              {!isLogin ? (
+            <form className="mt-8 grid gap-4" onSubmit={handleSubmit}>
+              {!isLogin && !isAdminSignup ? (
                 <label className="grid gap-2">
                   <span className="auth-label">Full name</span>
                   <input className="form-input" type="text" placeholder="Aarav Sharma" />
@@ -131,7 +159,13 @@ export default function AuthPanel({ mode }) {
 
               <label className="grid gap-2">
                 <span className="auth-label">Email address</span>
-                <input className="form-input" type="email" placeholder="you@example.com" />
+                <input
+                  className="form-input"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
               </label>
 
               <label className="grid gap-2">
@@ -160,7 +194,7 @@ export default function AuthPanel({ mode }) {
                 </div>
               </label>
 
-              {!isLogin ? (
+              {!isLogin && !isAdminSignup ? (
                 <label className="grid gap-2">
                   <span className="auth-label">Confirm password</span>
                   <div className="auth-password-wrap">
@@ -181,19 +215,36 @@ export default function AuthPanel({ mode }) {
                 </label>
               ) : null}
 
-              <label className="auth-check">
-                <input type="checkbox" defaultChecked />
-                <span>
-                  {isLogin
-                    ? "Keep me signed in on this device"
-                    : "I agree to the Terms of Service and Privacy Policy"}
-                </span>
-              </label>
+              {isAdminSignup ? (
+                <div className="rounded-[24px] border border-[#e3d2ff] bg-[linear-gradient(145deg,_rgba(255,255,255,0.88),_rgba(244,236,255,0.92))] p-5 text-[#6f4798]">
+                  <p className="font-semibold text-[#5f2e99]">
+                    Admin accounts can&apos;t be created from this screen.
+                  </p>
+                  <p className="mt-2 leading-7">
+                    Use the approved admin email and continue through the login page instead.
+                  </p>
+                  <Link to="/login" className="primary-pill mt-4 w-fit">
+                    <span>Go to admin login</span>
+                    <ArrowRight size={18} />
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <label className="auth-check">
+                    <input type="checkbox" defaultChecked />
+                    <span>
+                      {isLogin
+                        ? "Keep me signed in on this device"
+                        : "I agree to the Terms of Service and Privacy Policy"}
+                    </span>
+                  </label>
 
-              <button type="submit" className="primary-pill justify-center">
-                <span>{isLogin ? "Login to dashboard" : "Create account"}</span>
-                <ArrowRight size={18} />
-              </button>
+                  <button type="submit" className="primary-pill justify-center">
+                    <span>{isLogin ? "Login to dashboard" : "Create account"}</span>
+                    <ArrowRight size={18} />
+                  </button>
+                </>
+              )}
             </form>
 
             <div className="auth-divider">
@@ -211,12 +262,18 @@ export default function AuthPanel({ mode }) {
               </button>
             </div>
 
-            <p className="mt-6 text-sm text-[#7d63a1]">
-              {isLogin ? "New to FinArena?" : "Already have an account?"}{" "}
-              <Link to={isLogin ? "/signup" : "/login"} className="font-semibold text-[#7b3aed]">
-                {isLogin ? "Sign up here" : "Login here"}
-              </Link>
-            </p>
+            {selectedRole !== "admin" ? (
+              <p className="mt-6 text-sm text-[#7d63a1]">
+                {isLogin ? "New to FinArena?" : "Already have an account?"}{" "}
+                <Link to={isLogin ? "/signup" : "/login"} className="font-semibold text-[#7b3aed]">
+                  {isLogin ? "Sign up here" : "Login here"}
+                </Link>
+              </p>
+            ) : (
+              <p className="mt-6 text-sm text-[#7d63a1]">
+                Admin access uses approved credentials only.
+              </p>
+            )}
           </div>
 
           <div className="flex items-center justify-center">

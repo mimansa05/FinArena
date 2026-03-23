@@ -9,6 +9,7 @@ import Learn from "./pages/Learn";
 import Login from "./pages/Login";
 import Practice from "./pages/Practice";
 import Quiz from "./pages/Quiz";
+import Track from "./pages/Track";
 import Simulator from "./pages/Simulator";
 import Signup from "./pages/Signup";
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/simulator" element={<Simulator />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/track/:id" element={<Track />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />

@@ -358,7 +358,7 @@ export default function Track() {
           .tp-body { padding: 36px 20px 60px; }
         }
       `}</style>
-
+<main className="page-shell">
       <div className="tp">
 
         {/* ── HERO ── */}
@@ -448,7 +448,7 @@ export default function Track() {
           </div>
 
         </div>
-      </div>
+      </div></main>
     </>
   );
 }

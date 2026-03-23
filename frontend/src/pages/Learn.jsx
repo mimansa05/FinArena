@@ -9,6 +9,7 @@ import {
   Star,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import heroImage from "../assets/hero.png";
 
 /* ─────────────────────────────────────────
    FULL COURSE STRUCTURE
@@ -652,7 +653,7 @@ export default function Learn() {
           .learn-stats { gap: 10px; }
         }
       `}</style>
-
+<main className="page-shell">
       <div className="learn-page">
         <div className="learn-box">
 
@@ -768,7 +769,7 @@ export default function Learn() {
           </section>
         </div>
         </div>{/* end learn-box */}
-      </div>
+      </div></main>
     </>
   );
 }
